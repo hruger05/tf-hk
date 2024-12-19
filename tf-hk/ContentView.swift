@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    // hi ollie
+    @State var gameState = false
     var body: some View {
         VStack {
             Image(systemName: "globe")

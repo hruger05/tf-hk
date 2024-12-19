@@ -13,29 +13,50 @@ class TilesceneBase : SKScene {
     var deployed: [DeployedUnit] = []
     
     var environmentMap: SKTileMapNode?
-    var available: [Troop] = []
+    var inventory: [SKSpriteNode] = []
     
-    var inventory: SKSpriteNode?
+    var selectionIdx = -1
     
     override func sceneDidLoad() {
         entityMap = childNode(withName: "PlayerMap") as! SKTileMapNode?
         environmentMap = childNode(withName: "GroundMap") as! SKTileMapNode?
-        inventory = childNode(withName: "Inventory") as! SKSpriteNode?
-    }
-    
-    public func setInventory() {
+        
+        for i in 0..<4 {
+            inventory.append(childNode(withName: "Troop\(i)") as! SKSpriteNode)
+        }
         
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
         
+        let location = touch.location(in: self)
+        
+        for i in 0..<4 {
+            if (inventory[i].contains(location)) {
+                selectionIdx = i
+                return
+            }
+        }
+        
+        guard entityMap != nil else {
+            return
+        }
+        
+        if entityMap!.contains(location) {
+            let x = entityMap!.tileColumnIndex(fromPosition: location)
+            let y = entityMap!.tileRowIndex(fromPosition: location)
+            
+            if let tile = entityMap!.tileDefinition(atColumn: x, row: y) {
+                
+            }
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         
         let location = touch.location(in: self)
-        
         
     }
 }
